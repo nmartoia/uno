@@ -11,6 +11,15 @@ const main = document.querySelector(".main")
 let pcart = cart[getRandomInt(39)]
 plateau.style.background=pcart.couleur;
 plateau.textContent=pcart.valeur
+n=0
+while(n<7){
+    let cree = cart[getRandomInt(39)]
+    let div = document.createElement("div")
+    div.style.background=cree.couleur;
+    div.textContent=cree.valeur
+    main.appendChild(div)
+    n++
+}
 
 pioche.addEventListener("click",()=>{
     let cree = cart[getRandomInt(39)]
