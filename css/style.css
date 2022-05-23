@@ -1,0 +1,17 @@
+html{
+    font-size: 62.5%;
+}
+div{
+    width: 10rem;
+    height: 15rem;
+    box-sizing: border-box;
+    padding: 4rem;
+    margin: 1rem;
+    font-size: 3rem;
+}
+
+.main{
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+}
