@@ -20,6 +20,43 @@ while(n<7){
     piocher()
     n++
 }
+function bot_joue(){
+    let e =getRandomInt(2);
+    if(plateau.style.background=='black'){
+        span.textContent--
+        let ordi =cart[getRandomInt(46)]
+        plateau.style.background=ordi.couleur
+        plateau.textContent=ordi.valeur;
+        if(ordi.couleur!='black'){
+            plateau.style.color='black'
+        }
+    }
+    else if(e==0){
+        span.textContent++
+    }
+    else{
+        span.textContent--
+        let ordi =cart[getRandomInt(46)]
+        if(ordi.couleur=='black'){
+            plateau.style.color='white'
+            plateau.style.background='black'
+            plateau.textContent=ordi.valeur;
+        }
+        else{
+            let m =getRandomInt(2)
+            if(m==0){
+                plateau.style.background=ordi.couleur
+            }
+            else{
+                plateau.textContent=ordi.valeur
+            }
+        }
+        if(span.textContent==0){
+            alert('vous avez perdu')
+            main.remove()
+        }
+    }
+}
 function piocher(){
     let cree = cart[getRandomInt(46)]
     let div = document.createElement("div")
@@ -34,41 +71,7 @@ function piocher(){
             plateau.textContent=div.textContent;
             plateau.attributes.style.nodeValue=div.attributes.style.nodeValue
             div.remove()
-            let e =getRandomInt(2);
-            if(plateau.style.background=='black'){
-                span.textContent--
-                let ordi =cart[getRandomInt(46)]
-                plateau.style.background=ordi.couleur
-                plateau.textContent=ordi.valeur;
-                if(ordi.couleur!='black'){
-                    plateau.style.color='black'
-                }
-            }
-            else if(e==0){
-                span.textContent++
-            }
-            else{
-                span.textContent--
-                let ordi =cart[getRandomInt(46)]
-                if(ordi.couleur=='black'){
-                    plateau.style.color='white'
-                    plateau.style.background='black'
-                    plateau.textContent=ordi.valeur;
-                }
-                else{
-                    let m =getRandomInt(2)
-                    if(m==0){
-                        plateau.style.background=ordi.couleur
-                    }
-                    else{
-                        plateau.textContent=ordi.valeur
-                    }
-                }
-                if(span.textContent==0){
-                    alert('vous avez perdu')
-                    main.remove()
-                }
-            }
+            bot_joue()
         }
         if(main.childNodes[0]==undefined){
             alert('vous avez gagner')
@@ -76,3 +79,4 @@ function piocher(){
     })
 }
 pioche.addEventListener("click", piocher)
+pioche.addEventListener("click", bot_joue)
