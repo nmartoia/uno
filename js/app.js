@@ -9,6 +9,7 @@ let main = document.querySelector(".main")
 let maine = main.childNodes;
 let span =document.querySelector("span")
 span.textContent=7;
+let b=0
 let pcart = cart[getRandomInt(46)]
 plateau.style.background=pcart.couleur;
 plateau.textContent=pcart.valeur
@@ -21,39 +22,49 @@ while(n<7){
     n++
 }
 function bot_joue(){
-    let e =getRandomInt(2);
-    if(plateau.style.background=='black'){
+    if(b==1){
         span.textContent--
-        let ordi =cart[getRandomInt(46)]
-        plateau.style.background=ordi.couleur
-        plateau.textContent=ordi.valeur;
-        if(ordi.couleur!='black'){
-            plateau.style.color='black'
-        }
-    }
-    else if(e==0){
-        span.textContent++
+        let ordis =cart[getRandomInt(46)]
+        plateau.textContent=ordis.valeur;
+        plateau.style.color='black'
+        b=0
     }
     else{
-        span.textContent--
-        let ordi =cart[getRandomInt(46)]
-        if(ordi.couleur=='black'){
-            plateau.style.color='white'
-            plateau.style.background='black'
+        let e =getRandomInt(2);
+        if(plateau.style.background=='black'){
+            span.textContent--
+            let ordi =cart[getRandomInt(46)]
+            plateau.style.background=ordi.couleur
             plateau.textContent=ordi.valeur;
+            if(ordi.couleur!='black'){
+                plateau.style.color='black'
+            }
+        }
+        else if(e==0){
+            span.textContent++
         }
         else{
-            let m =getRandomInt(2)
-            if(m==0){
-                plateau.style.background=ordi.couleur
+            span.textContent--
+            let ordi =cart[getRandomInt(46)]
+            if(ordi.couleur=='black'){
+                plateau.style.color='white'
+                plateau.style.background='black'
+                plateau.textContent=ordi.valeur;
             }
             else{
-                plateau.textContent=ordi.valeur
+                let m =getRandomInt(2)
+                if(m==0){
+                    plateau.style.background=ordi.couleur
+                }
+                else{
+                    plateau.textContent=ordi.valeur
+                }
             }
-        }
-        if(span.textContent==0){
-            alert('vous avez perdu')
-            main.remove()
+            if(span.textContent==0){
+                alert('vous avez perdu')
+                main.remove()
+                pioche.remove()
+            }
         }
     }
 }
@@ -71,10 +82,39 @@ function piocher(){
             plateau.textContent=div.textContent;
             plateau.attributes.style.nodeValue=div.attributes.style.nodeValue
             div.remove()
-            bot_joue()
-        }
-        if(main.childNodes[0]==undefined){
-            alert('vous avez gagner')
+            if(div.style.background=='black'){
+                const reponse = prompt('donner la premier letre de la couleur que vous vouler')
+                if(reponse=='r'){
+                    plateau.style.background='red'
+                    plateau.textContent=''
+                    b=1
+                }
+                else if(reponse=='b'){
+                    plateau.style.background='blue'
+                    plateau.textContent=''
+                    b=1
+                }
+                else if(reponse=='g'||reponse=='v'){
+                    plateau.style.background='green'
+                    plateau.textContent=''
+                    b=1
+                }
+                else if(reponse=='j'||reponse=='y'){
+                    plateau.style.background='yellow'
+                    plateau.textContent=''
+                    b=1
+                }
+                else{
+                    alert('vous avez perdu votre bonus')
+                }
+            }
+            if(main.childNodes[0]==undefined){
+                alert('vous avez gagner')
+                pioche.remove()
+            }
+            else{
+                bot_joue()
+            }
         }
     })
 }
