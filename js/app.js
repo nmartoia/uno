@@ -9,8 +9,11 @@ const abandonner =document.querySelector('#abandonner')
 let main = document.querySelector(".main")
 let maine = main.childNodes;
 let span =document.querySelector("span")
+const uno =document.querySelector('#uno')
 span.textContent=7;
 let b=0
+let z=0
+let cuno=0
 let pcart = cart[getRandomInt(46)]
 plateau.style.background=pcart.couleur;
 plateau.textContent=pcart.valeur
@@ -23,6 +26,7 @@ while(n<7){
     n++
 }
 function bot_joue(){
+
     if(plus!=0){
         let plus2=getRandomInt(2)
         if(plus2==0){
@@ -40,13 +44,25 @@ function bot_joue(){
             span.textContent--
         }
     }
+    else if(z==1){
+        z=0
+        let m =parseInt(span.textContent)
+        m+=4
+        span.textContent=m
+        m=0
+    }
     else{
         if(b==1){
             span.textContent--
-            let ordis =cart[getRandomInt(46)]
+            let ordis =cart[getRandomInt(44)]
             plateau.textContent=ordis.valeur;
             plateau.style.color='black'
             b=0
+            if(ordis.valeur=='+2'){
+                plus+=2
+                pioche.style.display='none'
+                abandonner.style.display='inline'
+            }
         }
         else{
             let e =getRandomInt(2);
@@ -65,18 +81,52 @@ function bot_joue(){
             else{
                 span.textContent--
                 let ordi =cart[getRandomInt(46)]
-                if(ordi.couleur=='black'){
-                    plateau.style.color='white'
-                    plateau.style.background='black'
-                    plateau.textContent=ordi.valeur;
+                if(ordi.couleur=='black'&&ordi.valeur=='all'){
+                    let bo =getRandomInt(4)
+                    if(bo==0){
+                        plateau.style.background='red'
+                    }
+                    else if(bo==0){
+                        plateau.style.background='blue'
+                    }
+                    else if(bo==0){
+                        plateau.style.background='green'
+                    }
+                    else{
+                        plateau.style.background='yellow'
+                    }
+                    plateau.textContent='';
                 }
+                else if(ordi.couleur=='black'&&ordi.valeur=='+4'){
+                    let bo =getRandomInt(4)
+                        plateau.textContent=cart[getRandomInt(44)].valeur
+                    
+                        if(bo==0){
+                            plateau.style.background='red'
+                        }
+                        else if(bo==0){
+                            plateau.style.background='blue'
+                        }
+                        else if(bo==0){
+                            plateau.style.background='green'
+                        }
+                        else{
+                            plateau.style.background='yellow'
+                        }
+                        span.textContent--
+                        let u =0
+                        while(u<4){
+                            piocher()
+                            u++
+                        }
+                        plateau.style.color='black'
+                    }
                 else{
                     let m =getRandomInt(2)
                     if(m==0){
                         plateau.style.background=ordi.couleur
                         if(plateau.textContent=='+2'){
                             plus+=2
-                            console.log(plus)
                             pioche.style.display='none'
                             abandonner.style.display='inline'
                         }
@@ -85,26 +135,27 @@ function bot_joue(){
                         plateau.textContent=ordi.valeur
                         if(plateau.textContent=='+2'){
                             plus+=2
-                            console.log(plus)
                             pioche.style.display='none'
                             abandonner.style.display='inline'
                         }
                     }
                 }
-                if(span.textContent==0){
-                    alert('vous avez perdu')
-                    main.remove()
-                    pioche.remove()
                 
-                }
             }
         }
+    }
+    if(span.textContent<=0){
+        alert('vous avez perdu')
+        main.remove()
+        pioche.remove()
+        span.textContent=0 
     }
 }
 function piocher(){
     let cree = cart[getRandomInt(46)]
     let div = document.createElement("div")
     div.style.background=cree.couleur;
+    uno.style.display='none' 
     if(cree.couleur=='black'){
         div.style.color='white'
     }
@@ -126,7 +177,7 @@ function piocher(){
                     abandonner.style.display='inline'
                     pioche.style.display='none'
                 }
-                if(div.style.background=='black'){
+                if(div.style.background=='black'&&div.textContent=='all'){
                     const reponse = prompt('donner la premier letre de la couleur que vous vouler')
                     if(reponse=='r'){
                         plateau.style.background='red'
@@ -152,15 +203,51 @@ function piocher(){
                         alert('vous avez perdu votre bonus')
                     }
                 }
+                else if(div.style.background=='black'&&div.textContent=='+4'){
+                    z=1
+                    const reponse = prompt('donner la premier letre de la couleur que vous vouler')
+                    if(reponse=='r'){
+                        plateau.style.background='red'
+                        plateau.textContent=''
+                    }
+                    else if(reponse=='b'){
+                        plateau.style.background='blue'
+                        plateau.textContent=''
+                    }
+                    else if(reponse=='g'||reponse=='v'){
+                        plateau.style.background='green'
+                        plateau.textContent=''
+                    }
+                    else if(reponse=='j'||reponse=='y'){
+                        plateau.style.background='yellow'
+                        plateau.textContent=''
+                    }
+                    else{
+                        alert('vous avez perdu votre bonus')
+                    }
+                }
                 if(main.childNodes[0]==undefined){
+                    if(main.childNodes[1]==undefined&&cuno==0){
+                            alert('contre uno')
+                            piocher()
+                            piocher()
+                    }
+                    else{
                     alert('vous avez gagner')
                     pioche.remove()
+                    abandonner.remove()
+                    uno.remove()
+                    }
+                }
+                else if(main.childNodes[1]==undefined){
+                    uno.style.display='inline'    
                 }
                 else{
                     bot_joue()
                 }
             }
         }
+        cuno=0
     })
 }
 pioche.addEventListener("click", piocher)
@@ -172,4 +259,8 @@ abandonner.addEventListener('click',()=>{
     }
     abandonner.style.display='none'
     pioche.style.display='inline'
+})
+uno.addEventListener('click',()=>{
+    uno.style.display=='none'
+    cuno=1
 })
